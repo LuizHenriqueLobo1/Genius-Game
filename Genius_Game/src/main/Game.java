@@ -6,11 +6,13 @@ import java.util.Random;
 public class Game {
 
 	private ArrayList<String> sequence;
+	private ArrayList<String> mySequence;
 	private Random random;
 	
 	public Game() {
-		this.sequence = new ArrayList<>();
-		this.random   = new Random();
+		this.sequence   = new ArrayList<>();
+		this.mySequence = new ArrayList<>();
+		this.random     = new Random();
 	}
 	
 	public void startSequence() {
@@ -28,12 +30,12 @@ public class Game {
 		}
 	}
 	
-	public ArrayList<String> getSequence() {
-		return this.sequence;
-	}
-	
 	public void resetSequence() {
 		this.sequence.clear();
+	}
+	
+	public ArrayList<String> getSequence() {
+		return this.sequence;
 	}
 	
 	public String getSequenceString() {
@@ -41,6 +43,47 @@ public class Game {
 		for(String element: this.sequence)
 			string += element;
 		return string;
+	}
+	
+	public int makePlay(String element) {
+		int status = 0;
+		if(this.canPlay()) {
+			this.mySequence.add(element);
+			if(this.mySequence.size() == this.sequence.size())
+				status = this.checkWin();
+		} else
+			status = -2;
+		return status;
+	}
+	
+	private boolean canPlay() {
+		boolean canPlay = false;
+		if(this.sequence.size() > 0) {
+			if(this.mySequence.size() < this.sequence.size())
+				canPlay = true;	
+		}
+		return canPlay;
+	}
+	
+	public ArrayList<String> getMySequence() {
+		return this.mySequence;
+	}
+	
+	public void resetMySequence() {
+		this.mySequence.clear();
+	}
+
+	private int checkWin() {
+		int winner = -1;
+		int count  = 0;
+		for(int i = 0; i < this.sequence.size(); i++) {
+			if(this.sequence.get(i).equals(this.mySequence.get(i)))
+				count++;
+		}
+		if(count == this.sequence.size())
+			winner = 1;
+		this.resetMySequence();
+		return winner;
 	}
 	
 }
