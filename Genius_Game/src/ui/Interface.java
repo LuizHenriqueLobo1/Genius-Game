@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,7 +18,6 @@ import main.Game;
 public class Interface {
 
 	private JFrame frame;
-	private JTextField textSequence;
 	
 	private Game game;
 	
@@ -48,37 +49,68 @@ public class Interface {
 		
 		game = new Game();
 		
+		JLabel lblStatus = new JLabel("");
+		lblStatus.setBounds(10, 381, 315, 14);
+		frame.getContentPane().add(lblStatus);
+		
 		JButton btnGreen = new JButton("Verde");
+		btnGreen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				play("1", lblStatus);
+			}
+		});
 		btnGreen.setBounds(10, 11, 176, 110);
 		frame.getContentPane().add(btnGreen);
 		
 		JButton btnBlue = new JButton("Azul");
+		btnBlue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				play("2", lblStatus);
+			}
+		});
 		btnBlue.setBounds(248, 11, 176, 110);
 		frame.getContentPane().add(btnBlue);
 		
 		JButton btnYellow = new JButton("Amarelo");
+		btnYellow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				play("3", lblStatus);
+			}
+		});
 		btnYellow.setBounds(10, 140, 176, 110);
 		frame.getContentPane().add(btnYellow);
 		
 		JButton btnRed = new JButton("Vermelho");
+		btnRed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				play("4", lblStatus);
+			}
+		});
 		btnRed.setBounds(248, 140, 176, 110);
 		frame.getContentPane().add(btnRed);
 	
-		textSequence = new JTextField();
+		JTextField textSequence = new JTextField();
 		textSequence.setBounds(10, 308, 414, 20);
 		frame.getContentPane().add(textSequence);
 		textSequence.setColumns(10);
 		textSequence.setEditable(false);
 		
-		JButton btnStart = new JButton("Rodar");
+		JButton btnStart = new JButton("Iniciar");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				game.resetSequence();
 				game.startSequence();
 				
+				lblStatus.setText("");
 				textSequence.setText("");
 				textSequence.setText(game.getSequenceString());
+				
 				btnStart.setEnabled(false);
+				btnGreen.setEnabled(false);
+				btnBlue.setEnabled(false);
+				btnYellow.setEnabled(false);
+				btnRed.setEnabled(false);
 				
 				Timer timer  = new Timer();
 				TimerTask timerTask = new TimerTask() {
@@ -107,9 +139,12 @@ public class Interface {
 							index++;
 						} else {
 							timer.cancel();
-							System.out.println("Rodada encerrada!");
-							game.resetSequence();
+							System.out.println("Sequencia gerada!");
 							btnStart.setEnabled(true);
+							btnGreen.setEnabled(true);
+							btnBlue.setEnabled(true);
+							btnYellow.setEnabled(true);
+							btnRed.setEnabled(true);
 						}
 					}
 				};
@@ -138,5 +173,15 @@ public class Interface {
 		};
 		timer.scheduleAtFixedRate(timerTask, 0, 1000);
 	}
-
+	
+	private void play(String element, JLabel label) {
+		int play = game.makePlay(element);
+		if(play == 1)
+			label.setText("ACERTOU");
+		else if(play == -1)
+			label.setText("ERROU");
+		else if(play == -2)
+			JOptionPane.showMessageDialog(null, "O jogo precisa ser inicado.");
+	}
+	
 }
