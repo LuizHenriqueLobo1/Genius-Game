@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import java.util.Timer;
@@ -19,7 +19,15 @@ public class Interface {
 
 	private JFrame frame;
 	
+	private JButton btnGreen;
+	private JButton btnBlue;
+	private JButton btnYellow;
+	private JButton btnRed;
+	private JButton btnStart;
+	private JButton btnRepeat;
+	
 	private Game game;
+	private Sprite sprites;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -48,12 +56,13 @@ public class Interface {
 		frame.getContentPane().setLayout(null);
 		
 		game = new Game();
+		sprites = new Sprite();
 		
 		JLabel lblStatus = new JLabel("");
 		lblStatus.setBounds(10, 381, 315, 14);
 		frame.getContentPane().add(lblStatus);
 		
-		JButton btnGreen = new JButton("Verde");
+		btnGreen = new JButton(sprites.imgGreen);
 		btnGreen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				play("1", lblStatus);
@@ -62,7 +71,7 @@ public class Interface {
 		btnGreen.setBounds(10, 11, 176, 110);
 		frame.getContentPane().add(btnGreen);
 		
-		JButton btnBlue = new JButton("Azul");
+		btnBlue = new JButton(sprites.imgBlue);
 		btnBlue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				play("2", lblStatus);
@@ -71,7 +80,7 @@ public class Interface {
 		btnBlue.setBounds(248, 11, 176, 110);
 		frame.getContentPane().add(btnBlue);
 		
-		JButton btnYellow = new JButton("Amarelo");
+		btnYellow = new JButton(sprites.imgYellow);
 		btnYellow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				play("3", lblStatus);
@@ -80,7 +89,7 @@ public class Interface {
 		btnYellow.setBounds(10, 140, 176, 110);
 		frame.getContentPane().add(btnYellow);
 		
-		JButton btnRed = new JButton("Vermelho");
+		btnRed = new JButton(sprites.imgRed);
 		btnRed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				play("4", lblStatus);
@@ -88,14 +97,8 @@ public class Interface {
 		});
 		btnRed.setBounds(248, 140, 176, 110);
 		frame.getContentPane().add(btnRed);
-	
-		JTextField textSequence = new JTextField();
-		textSequence.setBounds(10, 308, 414, 20);
-		frame.getContentPane().add(textSequence);
-		textSequence.setColumns(10);
-		textSequence.setEditable(false);
 		
-		JButton btnStart = new JButton("Iniciar");
+		btnStart = new JButton("Iniciar");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -103,75 +106,29 @@ public class Interface {
 				game.startSequence();
 				
 				lblStatus.setText("");
-				textSequence.setText("");
-				textSequence.setText(game.getSequenceString());
-				
 				btnStart.setEnabled(false);
-				btnGreen.setEnabled(false);
-				btnBlue.setEnabled(false);
-				btnYellow.setEnabled(false);
-				btnRed.setEnabled(false);
+				btnRepeat.setEnabled(false);
 				
-				Timer timer  = new Timer();
-				TimerTask timerTask = new TimerTask() {
-					int index = 0;
-					public void run() {
-						if(index < game.getSequence().size()) {
-							System.out.println(game.getSequence().get(index));
-							switch(game.getSequence().get(index)) {
-								case "1": {
-									changeButtonText(btnGreen, "Verde");
-									break;
-								}
-								case "2": {
-									changeButtonText(btnBlue, "Azul");
-									break;
-								}
-								case "3": {
-									changeButtonText(btnYellow, "Amarelo");
-									break;
-								}
-								case "4": {
-									changeButtonText(btnRed, "Vermelho");
-									break;
-								}
-							}
-							index++;
-						} else {
-							timer.cancel();
-							System.out.println("Sequencia gerada!");
-							btnStart.setEnabled(true);
-							btnGreen.setEnabled(true);
-							btnBlue.setEnabled(true);
-							btnYellow.setEnabled(true);
-							btnRed.setEnabled(true);
-						}
-					}
-				};
-				timer.scheduleAtFixedRate(timerTask, 0, 1000);
-				
+				runSequence();
 			}
 		});
 		btnStart.setBounds(10, 274, 414, 23);
 		frame.getContentPane().add(btnStart);
 		
-	}
-	
-	private void changeButtonText(JButton button, String color) {
-		Timer timer = new Timer();
-		TimerTask timerTask = new TimerTask() {
-			int count = 0;
-			public void run() {
-				if(count < 1) {
-					button.setText("---");
-					count++;
-				} else {
-					timer.cancel();
-					button.setText(color);
-				}
+		btnRepeat = new JButton("Repetir");
+		btnRepeat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				lblStatus.setText("");
+				btnStart.setEnabled(false);
+				btnRepeat.setEnabled(false);
+				
+				runSequence();
 			}
-		};
-		timer.scheduleAtFixedRate(timerTask, 0, 1000);
+		});
+		btnRepeat.setBounds(10, 308, 414, 23);
+		frame.getContentPane().add(btnRepeat);
+		
 	}
 	
 	private void play(String element, JLabel label) {
@@ -182,6 +139,58 @@ public class Interface {
 			label.setText("ERROU");
 		else if(play == -2)
 			JOptionPane.showMessageDialog(null, "O jogo precisa ser inicado.");
+	}
+	
+	private void runSequence() {
+		Timer timer  = new Timer();
+		TimerTask timerTask = new TimerTask() {
+			int index = 0;
+			public void run() {
+				if(index < game.getSequence().size()) {
+					switch(game.getSequence().get(index)) {
+						case "1": {
+							changeSprite(btnGreen, sprites.imgGreen2, sprites.imgGreen);
+							break;
+						}
+						case "2": {
+							changeSprite(btnBlue, sprites.imgBlue2, sprites.imgBlue);
+							break;
+						}
+						case "3": {
+							changeSprite(btnYellow, sprites.imgYellow2, sprites.imgYellow);
+							break;
+						}
+						case "4": {
+							changeSprite(btnRed, sprites.imgRed2, sprites.imgRed);
+							break;
+						}
+					}
+					index++;
+				} else {
+					timer.cancel();
+					btnStart.setEnabled(true);
+					btnRepeat.setEnabled(true);
+				}
+			}
+		};
+		timer.scheduleAtFixedRate(timerTask, 0, 1000);
+	}
+	
+	private void changeSprite(JButton button, ImageIcon tempSprite, ImageIcon fixedSprite) {
+		Timer timer = new Timer();
+		TimerTask timerTask = new TimerTask() {
+			int count = 0;
+			public void run() {
+				if(count < 1) {
+					button.setIcon(tempSprite);
+					count++;
+				} else {
+					timer.cancel();
+					button.setIcon(fixedSprite);
+				}
+			}
+		};
+		timer.scheduleAtFixedRate(timerTask, 0, 1000);
 	}
 	
 }

@@ -38,13 +38,6 @@ public class Game {
 		return this.sequence;
 	}
 	
-	public String getSequenceString() {
-		String string = "";
-		for(String element: this.sequence)
-			string += element;
-		return string;
-	}
-	
 	public int makePlay(String element) {
 		int status = 0;
 		if(this.canPlay()) {
