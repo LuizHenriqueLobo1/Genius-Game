@@ -7,16 +7,20 @@ public class Game {
 
 	private ArrayList<String> sequence;
 	private ArrayList<String> mySequence;
+	private int controller;
+	private int roundNumber;
 	private Random random;
 	
 	public Game() {
 		this.sequence   = new ArrayList<>();
 		this.mySequence = new ArrayList<>();
+		this.controller = 4;
+		this.roundNumber = 0;
 		this.random     = new Random();
 	}
 	
 	public void startSequence() {
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < this.controller; i++) {
 			String element = Integer.toString(this.random.nextInt(5 - 1) + 1);
 			if(i >= 1) {
 				if(element.equals(this.sequence.get(i-1))) {
@@ -28,6 +32,7 @@ public class Game {
 				this.sequence.add(element);
 			}
 		}
+		this.updateRoundNumber();
 	}
 	
 	public void resetSequence() {
@@ -64,6 +69,14 @@ public class Game {
 	
 	public void resetMySequence() {
 		this.mySequence.clear();
+	}
+	
+	private void updateRoundNumber() {
+		this.roundNumber++;
+	}
+	
+	public String getRoundNumberString() {
+		return Integer.toString(this.roundNumber);
 	}
 
 	private int checkWin() {

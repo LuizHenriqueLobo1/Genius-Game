@@ -58,6 +58,14 @@ public class Interface {
 		game = new Game();
 		sprites = new Sprite();
 		
+		JLabel lblRound = new JLabel("Rodada:");
+		lblRound.setBounds(10, 11, 46, 14);
+		frame.getContentPane().add(lblRound);
+		
+		JLabel lblRoundNumber = new JLabel("1");
+		lblRoundNumber.setBounds(60, 11, 46, 14);
+		frame.getContentPane().add(lblRoundNumber);
+		
 		JLabel lblStatus = new JLabel("");
 		lblStatus.setBounds(10, 381, 315, 14);
 		frame.getContentPane().add(lblStatus);
@@ -68,7 +76,7 @@ public class Interface {
 				play("1", lblStatus);
 			}
 		});
-		btnGreen.setBounds(10, 11, 176, 110);
+		btnGreen.setBounds(10, 36, 176, 110);
 		frame.getContentPane().add(btnGreen);
 		
 		btnBlue = new JButton(sprites.imgBlue);
@@ -77,7 +85,7 @@ public class Interface {
 				play("2", lblStatus);
 			}
 		});
-		btnBlue.setBounds(248, 11, 176, 110);
+		btnBlue.setBounds(248, 36, 176, 110);
 		frame.getContentPane().add(btnBlue);
 		
 		btnYellow = new JButton(sprites.imgYellow);
@@ -86,7 +94,7 @@ public class Interface {
 				play("3", lblStatus);
 			}
 		});
-		btnYellow.setBounds(10, 140, 176, 110);
+		btnYellow.setBounds(10, 175, 176, 110);
 		frame.getContentPane().add(btnYellow);
 		
 		btnRed = new JButton(sprites.imgRed);
@@ -95,7 +103,7 @@ public class Interface {
 				play("4", lblStatus);
 			}
 		});
-		btnRed.setBounds(248, 140, 176, 110);
+		btnRed.setBounds(248, 175, 176, 110);
 		frame.getContentPane().add(btnRed);
 		
 		btnStart = new JButton("Iniciar");
@@ -105,6 +113,7 @@ public class Interface {
 				game.resetSequence();
 				game.startSequence();
 				
+				lblRoundNumber.setText(game.getRoundNumberString());
 				lblStatus.setText("");
 				btnStart.setEnabled(false);
 				btnRepeat.setEnabled(false);
@@ -112,7 +121,7 @@ public class Interface {
 				runSequence();
 			}
 		});
-		btnStart.setBounds(10, 274, 414, 23);
+		btnStart.setBounds(10, 313, 414, 23);
 		frame.getContentPane().add(btnStart);
 		
 		btnRepeat = new JButton("Repetir");
@@ -126,7 +135,7 @@ public class Interface {
 				runSequence();
 			}
 		});
-		btnRepeat.setBounds(10, 308, 414, 23);
+		btnRepeat.setBounds(10, 347, 414, 23);
 		frame.getContentPane().add(btnRepeat);
 		
 	}
@@ -192,5 +201,5 @@ public class Interface {
 		};
 		timer.scheduleAtFixedRate(timerTask, 0, 1000);
 	}
-	
+
 }
