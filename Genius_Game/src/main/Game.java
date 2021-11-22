@@ -14,24 +14,24 @@ public class Game {
 	public Game() {
 		this.sequence   = new ArrayList<>();
 		this.mySequence = new ArrayList<>();
-		this.controller = 4;
-		this.roundNumber = 0;
+		this.controller = 3;
+		this.roundNumber = 1;
 		this.random     = new Random();
 	}
 	
 	public void startSequence() {
+		this.controller = 3;
+		this.roundNumber = 1;
 		for(int i = 0; i < this.controller; i++) {
 			String element = Integer.toString(this.random.nextInt(5 - 1) + 1);
-			if(i >= 1) {
-				if(element.equals(this.sequence.get(i-1))) {
-					i--;
-				} else {
-					this.sequence.add(element);
-				}
-			} else {
-				this.sequence.add(element);
-			}
+			this.sequence.add(element);
 		}
+	}
+	
+	public void updateSequence() {
+		String element = Integer.toString(this.random.nextInt(5 - 1) + 1);
+		this.sequence.add(element);
+		this.controller++;
 		this.updateRoundNumber();
 	}
 	
@@ -78,7 +78,7 @@ public class Game {
 	public String getRoundNumberString() {
 		return Integer.toString(this.roundNumber);
 	}
-
+	
 	private int checkWin() {
 		int winner = -1;
 		int count  = 0;

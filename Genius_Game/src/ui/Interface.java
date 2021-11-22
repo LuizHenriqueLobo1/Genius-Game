@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,7 +25,7 @@ public class Interface {
 	private JButton btnYellow;
 	private JButton btnRed;
 	private JButton btnStart;
-	private JButton btnRepeat;
+	private JButton btnAdvance;
 	
 	private Game game;
 	private Sprite sprites;
@@ -67,7 +68,8 @@ public class Interface {
 		frame.getContentPane().add(lblRoundNumber);
 		
 		JLabel lblStatus = new JLabel("");
-		lblStatus.setBounds(10, 381, 315, 14);
+		lblStatus.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblStatus.setBounds(353, 11, 71, 14);
 		frame.getContentPane().add(lblStatus);
 		
 		btnGreen = new JButton(sprites.imgGreen);
@@ -113,40 +115,51 @@ public class Interface {
 				game.resetSequence();
 				game.startSequence();
 				
-				lblRoundNumber.setText(game.getRoundNumberString());
+				enableColorButtons();
+				
 				lblStatus.setText("");
+				lblRoundNumber.setText("1");
 				btnStart.setEnabled(false);
-				btnRepeat.setEnabled(false);
+				btnAdvance.setEnabled(false);
 				
 				runSequence();
 			}
 		});
-		btnStart.setBounds(10, 313, 414, 23);
+		btnStart.setBounds(10, 310, 414, 23);
 		frame.getContentPane().add(btnStart);
 		
-		btnRepeat = new JButton("Repetir");
-		btnRepeat.addActionListener(new ActionListener() {
+		btnAdvance = new JButton("Avan\u00E7ar");
+		btnAdvance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				game.updateSequence();
 				
 				lblStatus.setText("");
 				btnStart.setEnabled(false);
-				btnRepeat.setEnabled(false);
+				btnAdvance.setEnabled(false);
+				
+				lblRoundNumber.setText(game.getRoundNumberString());
 				
 				runSequence();
 			}
 		});
-		btnRepeat.setBounds(10, 347, 414, 23);
-		frame.getContentPane().add(btnRepeat);
+		btnAdvance.setBounds(10, 344, 414, 23);
+		btnAdvance.setEnabled(false);
+		frame.getContentPane().add(btnAdvance);
 		
 	}
 	
 	private void play(String element, JLabel label) {
 		int play = game.makePlay(element);
-		if(play == 1)
+		label.setText("");
+		if(play == 1) {
 			label.setText("ACERTOU");
-		else if(play == -1)
+			btnAdvance.setEnabled(true);
+		} else if(play == -1) {
 			label.setText("ERROU");
-		else if(play == -2)
+			disableColorButtons();
+			btnStart.setEnabled(true);
+		} else if(play == -2)
 			JOptionPane.showMessageDialog(null, "O jogo precisa ser inicado.");
 	}
 	
@@ -177,12 +190,10 @@ public class Interface {
 					index++;
 				} else {
 					timer.cancel();
-					btnStart.setEnabled(true);
-					btnRepeat.setEnabled(true);
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(timerTask, 0, 1000);
+		timer.scheduleAtFixedRate(timerTask, 0, 800);
 	}
 	
 	private void changeSprite(JButton button, ImageIcon tempSprite, ImageIcon fixedSprite) {
@@ -199,7 +210,21 @@ public class Interface {
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(timerTask, 0, 1000);
+		timer.scheduleAtFixedRate(timerTask, 500, 500);
 	}
-
+	
+	private void enableColorButtons() {
+		btnGreen.setEnabled(true);
+		btnBlue.setEnabled(true);
+		btnYellow.setEnabled(true);
+		btnRed.setEnabled(true);
+	}
+	
+	private void disableColorButtons() {
+		btnGreen.setEnabled(false);
+		btnBlue.setEnabled(false);
+		btnYellow.setEnabled(false);
+		btnRed.setEnabled(false);
+	}
+	
 }
