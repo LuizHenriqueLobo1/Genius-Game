@@ -15,10 +15,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import main.Game;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 
 public class Interface {
 
 	private JFrame frame;
+	
+	private JTabbedPane tabbedPane;
+	private JPanel panelGame;
+	private JPanel panelStart;
+	private JPanel panelReport;
 	
 	private JButton btnGreen;
 	private JButton btnBlue;
@@ -49,7 +56,7 @@ public class Interface {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 450);
+		frame.setBounds(100, 100, 500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
@@ -59,18 +66,34 @@ public class Interface {
 		game = new Game();
 		sprites = new Sprite();
 		
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 11, 464, 439);
+		frame.getContentPane().add(tabbedPane);
+		
+		panelStart = new JPanel();
+		tabbedPane.addTab("Inicio", null, panelStart, null);
+		panelStart.setLayout(null);
+		
+		panelGame = new JPanel();
+		tabbedPane.addTab("Jogo", null, panelGame, null);
+		panelGame.setLayout(null);
+		
+		panelReport = new JPanel();
+		tabbedPane.addTab("Relatorio", null, panelReport, null);
+		panelReport.setLayout(null);
+		
 		JLabel lblRound = new JLabel("Rodada:");
-		lblRound.setBounds(10, 11, 46, 14);
-		frame.getContentPane().add(lblRound);
+		lblRound.setBounds(10, 10, 60, 14);
+		panelGame.add(lblRound);
 		
 		JLabel lblRoundNumber = new JLabel("1");
-		lblRoundNumber.setBounds(60, 11, 46, 14);
-		frame.getContentPane().add(lblRoundNumber);
+		lblRoundNumber.setBounds(60, 10, 20, 14);
+		panelGame.add(lblRoundNumber);
 		
 		JLabel lblStatus = new JLabel("");
 		lblStatus.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStatus.setBounds(353, 11, 71, 14);
-		frame.getContentPane().add(lblStatus);
+		lblStatus.setBounds(389, 10, 60, 14);
+		panelGame.add(lblStatus);
 		
 		btnGreen = new JButton(sprites.imgGreen);
 		btnGreen.addActionListener(new ActionListener() {
@@ -78,8 +101,8 @@ public class Interface {
 				play("1", lblStatus);
 			}
 		});
-		btnGreen.setBounds(10, 36, 176, 110);
-		frame.getContentPane().add(btnGreen);
+		btnGreen.setBounds(10, 35, 176, 110);
+		panelGame.add(btnGreen);
 		
 		btnBlue = new JButton(sprites.imgBlue);
 		btnBlue.addActionListener(new ActionListener() {
@@ -87,8 +110,8 @@ public class Interface {
 				play("2", lblStatus);
 			}
 		});
-		btnBlue.setBounds(248, 36, 176, 110);
-		frame.getContentPane().add(btnBlue);
+		btnBlue.setBounds(273, 35, 176, 110);
+		panelGame.add(btnBlue);
 		
 		btnYellow = new JButton(sprites.imgYellow);
 		btnYellow.addActionListener(new ActionListener() {
@@ -96,8 +119,8 @@ public class Interface {
 				play("3", lblStatus);
 			}
 		});
-		btnYellow.setBounds(10, 175, 176, 110);
-		frame.getContentPane().add(btnYellow);
+		btnYellow.setBounds(10, 156, 176, 110);
+		panelGame.add(btnYellow);
 		
 		btnRed = new JButton(sprites.imgRed);
 		btnRed.addActionListener(new ActionListener() {
@@ -105,8 +128,8 @@ public class Interface {
 				play("4", lblStatus);
 			}
 		});
-		btnRed.setBounds(248, 175, 176, 110);
-		frame.getContentPane().add(btnRed);
+		btnRed.setBounds(273, 156, 176, 110);
+		panelGame.add(btnRed);
 		
 		btnStart = new JButton("Iniciar");
 		btnStart.addActionListener(new ActionListener() {
@@ -125,8 +148,8 @@ public class Interface {
 				runSequence();
 			}
 		});
-		btnStart.setBounds(10, 310, 414, 23);
-		frame.getContentPane().add(btnStart);
+		btnStart.setBounds(10, 294, 439, 23);
+		panelGame.add(btnStart);
 		
 		btnAdvance = new JButton("Avan\u00E7ar");
 		btnAdvance.addActionListener(new ActionListener() {
@@ -143,9 +166,9 @@ public class Interface {
 				runSequence();
 			}
 		});
-		btnAdvance.setBounds(10, 344, 414, 23);
+		btnAdvance.setBounds(10, 328, 439, 23);
 		btnAdvance.setEnabled(false);
-		frame.getContentPane().add(btnAdvance);
+		panelGame.add(btnAdvance);
 		
 	}
 	
