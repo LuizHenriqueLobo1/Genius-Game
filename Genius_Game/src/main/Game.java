@@ -9,18 +9,25 @@ public class Game {
 	private ArrayList<String> mySequence;
 	private int controller;
 	private int roundNumber;
+	private int difficulty;
+	private int speedLevel;
+	private int[] speeds;
 	private Random random;
 	
 	public Game() {
-		this.sequence   = new ArrayList<>();
-		this.mySequence = new ArrayList<>();
-		this.controller = 3;
+		this.sequence    = new ArrayList<>();
+		this.mySequence  = new ArrayList<>();
+		this.controller  = 3;
 		this.roundNumber = 1;
-		this.random     = new Random();
+		this.difficulty  = 1;
+		this.speedLevel  = 1;
+		this.speeds 	 = new int[3];
+		this.random      = new Random();
 	}
 	
 	public void startSequence() {
-		this.controller = 3;
+		this.updateDifficulty();
+		this.updateSpeedLevel();
 		this.roundNumber = 1;
 		for(int i = 0; i < this.controller; i++) {
 			String element = Integer.toString(this.random.nextInt(5 - 1) + 1);
@@ -77,6 +84,65 @@ public class Game {
 	
 	public String getRoundNumberString() {
 		return Integer.toString(this.roundNumber);
+	}
+	
+	private void updateDifficulty() {
+		if(this.difficulty == 1)
+			this.controller = 3;
+		else if(this.difficulty == 2)
+			this.controller = 4;
+		else
+			this.controller = 5;
+	}
+	
+	public int getDifficulty() {
+		return this.difficulty;
+	}
+	
+	public String getDifficultyString() {
+		return Integer.toString(this.difficulty);
+	}
+	
+	private void updateSpeedLevel() {
+		if(this.speedLevel == 1) {
+			this.speeds[0] = 800;
+			this.speeds[1] = 500;
+			this.speeds[2] = 500;
+		} else if(this.speedLevel == 2) {
+			this.speeds[0] = 500;
+			this.speeds[1] = 250;
+			this.speeds[2] = 250;
+		} else {
+			this.speeds[0] = 200;
+			this.speeds[1] = 100;
+			this.speeds[2] = 100;
+		}
+	}
+	
+	public int getSpeedLevel() {
+		return this.speedLevel;
+	}
+	
+	public String getSpeedLevelString() {
+		return Integer.toString(this.speedLevel);
+	}
+	
+	public int[] getSpeeds() {
+		return this.speeds;
+	}
+	
+	public void changeValueOf(String element) {
+		if(element.equals("Difficulty")) {
+			if(this.difficulty >= 1 && this.difficulty < 3)
+				this.difficulty++;
+			else
+				this.difficulty = 1;
+		} else {
+			if(this.speedLevel >= 1 && this.speedLevel < 3)
+				this.speedLevel++;
+			else
+				this.speedLevel = 1;
+		}
 	}
 	
 	private int checkWin() {

@@ -10,13 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import main.Game;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
 
 public class Interface {
 
@@ -33,6 +33,8 @@ public class Interface {
 	private JButton btnRed;
 	private JButton btnStart;
 	private JButton btnAdvance;
+	private JButton btnDifficulty;
+	private JButton btnSpeed;
 	
 	private Game game;
 	private Sprite sprites;
@@ -145,7 +147,7 @@ public class Interface {
 				btnStart.setEnabled(false);
 				btnAdvance.setEnabled(false);
 				
-				runSequence();
+				runSequence(game.getSpeeds());
 			}
 		});
 		btnStart.setBounds(10, 294, 439, 23);
@@ -163,12 +165,40 @@ public class Interface {
 				
 				lblRoundNumber.setText(game.getRoundNumberString());
 				
-				runSequence();
+				runSequence(game.getSpeeds());
 			}
 		});
 		btnAdvance.setBounds(10, 328, 439, 23);
 		btnAdvance.setEnabled(false);
 		panelGame.add(btnAdvance);
+		
+		JLabel lblDifficulty = new JLabel("Dificuldade:");
+		lblDifficulty.setBounds(10, 372, 76, 14);
+		panelGame.add(lblDifficulty);
+		
+		btnDifficulty = new JButton("1");
+		btnDifficulty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.changeValueOf("Difficulty");
+				btnDifficulty.setText(game.getDifficultyString());
+			}
+		});
+		btnDifficulty.setBounds(80, 368, 42, 23);
+		panelGame.add(btnDifficulty);
+		
+		JLabel lblSpeed = new JLabel("Velocidade:");
+		lblSpeed.setBounds(132, 372, 76, 14);
+		panelGame.add(lblSpeed);
+		
+		btnSpeed = new JButton("1");
+		btnSpeed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.changeValueOf("Speed");
+				btnSpeed.setText(game.getSpeedLevelString());
+			}
+		});
+		btnSpeed.setBounds(202, 368, 42, 23);
+		panelGame.add(btnSpeed);
 		
 	}
 	
@@ -186,7 +216,7 @@ public class Interface {
 			JOptionPane.showMessageDialog(null, "O jogo precisa ser inicado.");
 	}
 	
-	private void runSequence() {
+	private void runSequence(int speeds[]) {
 		Timer timer  = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			int index = 0;
@@ -194,19 +224,19 @@ public class Interface {
 				if(index < game.getSequence().size()) {
 					switch(game.getSequence().get(index)) {
 						case "1": {
-							changeSprite(btnGreen, sprites.imgGreen2, sprites.imgGreen);
+							changeSprite(btnGreen, sprites.imgGreen2, sprites.imgGreen, speeds);
 							break;
 						}
 						case "2": {
-							changeSprite(btnBlue, sprites.imgBlue2, sprites.imgBlue);
+							changeSprite(btnBlue, sprites.imgBlue2, sprites.imgBlue, speeds);
 							break;
 						}
 						case "3": {
-							changeSprite(btnYellow, sprites.imgYellow2, sprites.imgYellow);
+							changeSprite(btnYellow, sprites.imgYellow2, sprites.imgYellow, speeds);
 							break;
 						}
 						case "4": {
-							changeSprite(btnRed, sprites.imgRed2, sprites.imgRed);
+							changeSprite(btnRed, sprites.imgRed2, sprites.imgRed, speeds);
 							break;
 						}
 					}
@@ -216,10 +246,10 @@ public class Interface {
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(timerTask, 0, 800);
+		timer.scheduleAtFixedRate(timerTask, 0, speeds[0]);
 	}
 	
-	private void changeSprite(JButton button, ImageIcon tempSprite, ImageIcon fixedSprite) {
+	private void changeSprite(JButton button, ImageIcon tempSprite, ImageIcon fixedSprite, int speeds[]) {
 		Timer timer = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			int count = 0;
@@ -233,7 +263,7 @@ public class Interface {
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(timerTask, 500, 500);
+		timer.scheduleAtFixedRate(timerTask, speeds[1], speeds[2]);
 	}
 	
 	private void enableColorButtons() {
@@ -249,5 +279,4 @@ public class Interface {
 		btnYellow.setEnabled(false);
 		btnRed.setEnabled(false);
 	}
-	
 }
