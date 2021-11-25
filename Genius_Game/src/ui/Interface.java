@@ -10,13 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import main.Game;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 
 public class Interface {
 
@@ -146,6 +146,8 @@ public class Interface {
 				lblRoundNumber.setText("1");
 				btnStart.setEnabled(false);
 				btnAdvance.setEnabled(false);
+				btnDifficulty.setEnabled(false);
+				btnSpeed.setEnabled(false);
 				
 				runSequence(game.getSpeeds());
 			}
@@ -212,8 +214,10 @@ public class Interface {
 			label.setText("ERROU");
 			disableColorButtons();
 			btnStart.setEnabled(true);
+			btnDifficulty.setEnabled(true);
+			btnSpeed.setEnabled(true);
 		} else if(play == -2)
-			JOptionPane.showMessageDialog(null, "O jogo precisa ser inicado.");
+			JOptionPane.showMessageDialog(null, "Você não pode jogar neste momento!");
 	}
 	
 	private void runSequence(int speeds[]) {
@@ -279,4 +283,5 @@ public class Interface {
 		btnYellow.setEnabled(false);
 		btnRed.setEnabled(false);
 	}
+
 }
