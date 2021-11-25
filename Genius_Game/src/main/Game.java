@@ -41,6 +41,7 @@ public class Game {
 		this.sequence.add(element);
 		this.controller++;
 		this.updateRoundNumber();
+		this.resetMySequence();
 	}
 	
 	public void resetSequence() {
@@ -159,7 +160,6 @@ public class Game {
 		}
 		if(count == this.sequence.size())
 			winner = 1;
-		this.resetMySequence();
 		return winner;
 	}
 	
