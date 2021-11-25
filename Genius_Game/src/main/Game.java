@@ -26,6 +26,7 @@ public class Game {
 	}
 	
 	public void startSequence() {
+		this.resetMySequence();
 		this.updateDifficulty();
 		this.updateSpeedLevel();
 		this.roundNumber = 1;
@@ -54,8 +55,12 @@ public class Game {
 		int status = 0;
 		if(this.canPlay()) {
 			this.mySequence.add(element);
-			if(this.mySequence.size() == this.sequence.size())
+			if(this.mySequence.size() == this.sequence.size()) {
 				status = this.checkWin();
+			} else {
+				if(!element.equals(this.sequence.get(this.mySequence.size()-1)))
+					status = -1;
+			}
 		} else
 			status = -2;
 		return status;
@@ -74,7 +79,7 @@ public class Game {
 		return this.mySequence;
 	}
 	
-	public void resetMySequence() {
+	private void resetMySequence() {
 		this.mySequence.clear();
 	}
 	
@@ -147,7 +152,7 @@ public class Game {
 	
 	private int checkWin() {
 		int winner = -1;
-		int count  = 0;
+		int count  =  0;
 		for(int i = 0; i < this.sequence.size(); i++) {
 			if(this.sequence.get(i).equals(this.mySequence.get(i)))
 				count++;
