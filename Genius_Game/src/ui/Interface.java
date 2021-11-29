@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -15,8 +17,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import main.Game;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
 
 public class Interface {
 
@@ -38,6 +38,7 @@ public class Interface {
 	
 	private Game game;
 	private Sprite sprites;
+	private PlaySound playSound;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -67,6 +68,7 @@ public class Interface {
 		
 		game = new Game();
 		sprites = new Sprite();
+		playSound = new PlaySound();
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 11, 464, 439);
