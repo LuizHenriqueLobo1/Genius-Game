@@ -56,7 +56,7 @@ public class Interface {
 	public Interface() {
 		initialize();
 	}
-
+	
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 500, 500);
@@ -102,7 +102,9 @@ public class Interface {
 		btnGreen = new JButton(sprites.imgGreen);
 		btnGreen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				play("1", lblStatus);
+				if(play("1", lblStatus) != -2) {
+					playSound.playSound("sounds/do.wav");
+				}
 			}
 		});
 		btnGreen.setBounds(10, 35, 176, 110);
@@ -111,7 +113,9 @@ public class Interface {
 		btnBlue = new JButton(sprites.imgBlue);
 		btnBlue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				play("2", lblStatus);
+				if(play("2", lblStatus) != -2) {
+					playSound.playSound("sounds/re.wav");
+				}
 			}
 		});
 		btnBlue.setBounds(273, 35, 176, 110);
@@ -120,7 +124,9 @@ public class Interface {
 		btnYellow = new JButton(sprites.imgYellow);
 		btnYellow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				play("3", lblStatus);
+				if(play("3", lblStatus) != -2) {
+					playSound.playSound("sounds/mi.wav");
+				}
 			}
 		});
 		btnYellow.setBounds(10, 156, 176, 110);
@@ -129,7 +135,9 @@ public class Interface {
 		btnRed = new JButton(sprites.imgRed);
 		btnRed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				play("4", lblStatus);
+				if(play("4", lblStatus) != -2) {
+					playSound.playSound("sounds/fa.wav");
+				}				
 			}
 		});
 		btnRed.setBounds(273, 156, 176, 110);
@@ -206,7 +214,7 @@ public class Interface {
 		
 	}
 	
-	private void play(String element, JLabel label) {
+	private int play(String element, JLabel label) {
 		int play = game.makePlay(element);
 		label.setText("");
 		if(play == 1) {
@@ -220,6 +228,7 @@ public class Interface {
 			btnSpeed.setEnabled(true);
 		} else if(play == -2)
 			JOptionPane.showMessageDialog(null, "Você não pode jogar neste momento!");
+		return play;
 	}
 	
 	private void runSequence(int speeds[]) {
@@ -230,18 +239,22 @@ public class Interface {
 				if(index < game.getSequence().size()) {
 					switch(game.getSequence().get(index)) {
 						case "1": {
+							playSound.playSound("sounds/do.wav");
 							changeSprite(btnGreen, sprites.imgGreen2, sprites.imgGreen, speeds);
 							break;
 						}
 						case "2": {
+							playSound.playSound("sounds/re.wav");
 							changeSprite(btnBlue, sprites.imgBlue2, sprites.imgBlue, speeds);
 							break;
 						}
 						case "3": {
+							playSound.playSound("sounds/mi.wav");
 							changeSprite(btnYellow, sprites.imgYellow2, sprites.imgYellow, speeds);
 							break;
 						}
 						case "4": {
+							playSound.playSound("sounds/fa.wav");
 							changeSprite(btnRed, sprites.imgRed2, sprites.imgRed, speeds);
 							break;
 						}
