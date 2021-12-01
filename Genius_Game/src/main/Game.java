@@ -112,16 +112,16 @@ public class Game {
 	private void updateSpeedLevel() {
 		if(this.speedLevel == 1) {
 			this.speeds[0] = 800;
-			this.speeds[1] = 500;
-			this.speeds[2] = 500;
+			this.speeds[1] = 150; // 500
+			this.speeds[2] = 150; // 500
 		} else if(this.speedLevel == 2) {
 			this.speeds[0] = 500;
-			this.speeds[1] = 250;
-			this.speeds[2] = 250;
+			this.speeds[1] = 150; // 250
+			this.speeds[2] = 150; // 250
 		} else {
 			this.speeds[0] = 200;
-			this.speeds[1] = 100;
-			this.speeds[2] = 100;
+			this.speeds[1] = 150; // 100
+			this.speeds[2] = 150; // 100
 		}
 	}
 	
