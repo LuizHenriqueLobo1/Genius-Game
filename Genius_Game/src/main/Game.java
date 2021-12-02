@@ -11,7 +11,7 @@ public class Game {
 	private int roundNumber;
 	private int difficulty;
 	private int speedLevel;
-	private int[] speeds;
+	private int speed;
 	private Random random;
 	
 	public Game() {
@@ -21,7 +21,7 @@ public class Game {
 		this.roundNumber = 1;
 		this.difficulty  = 1;
 		this.speedLevel  = 1;
-		this.speeds 	 = new int[3];
+		this.speed       = 800;
 		this.random      = new Random();
 	}
 	
@@ -111,17 +111,11 @@ public class Game {
 	
 	private void updateSpeedLevel() {
 		if(this.speedLevel == 1) {
-			this.speeds[0] = 800;
-			this.speeds[1] = 150; // 500
-			this.speeds[2] = 150; // 500
+			this.speed = 800;
 		} else if(this.speedLevel == 2) {
-			this.speeds[0] = 500;
-			this.speeds[1] = 150; // 250
-			this.speeds[2] = 150; // 250
+			this.speed = 500;
 		} else {
-			this.speeds[0] = 200;
-			this.speeds[1] = 150; // 100
-			this.speeds[2] = 150; // 100
+			this.speed = 200;
 		}
 	}
 	
@@ -133,8 +127,8 @@ public class Game {
 		return Integer.toString(this.speedLevel);
 	}
 	
-	public int[] getSpeeds() {
-		return this.speeds;
+	public int getSpeed() {
+		return this.speed;
 	}
 	
 	public void changeValueOf(String element) {
