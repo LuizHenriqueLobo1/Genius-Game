@@ -103,6 +103,7 @@ public class Interface {
 		btnGreen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(play("1", lblStatus) != -2) {
+					changeSprite(btnGreen, sprites.imgGreen2, sprites.imgGreen);
 					playSound.playSound("sounds/do.wav");
 				}
 			}
@@ -114,6 +115,7 @@ public class Interface {
 		btnBlue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(play("2", lblStatus) != -2) {
+					changeSprite(btnBlue, sprites.imgBlue2, sprites.imgBlue);
 					playSound.playSound("sounds/re.wav");
 				}
 			}
@@ -125,6 +127,7 @@ public class Interface {
 		btnYellow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(play("3", lblStatus) != -2) {
+					changeSprite(btnYellow, sprites.imgYellow2, sprites.imgYellow);
 					playSound.playSound("sounds/mi.wav");
 				}
 			}
@@ -136,6 +139,7 @@ public class Interface {
 		btnRed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(play("4", lblStatus) != -2) {
+					changeSprite(btnRed, sprites.imgRed2, sprites.imgRed);
 					playSound.playSound("sounds/fa.wav");
 				}				
 			}
@@ -159,7 +163,7 @@ public class Interface {
 				btnDifficulty.setEnabled(false);
 				btnSpeed.setEnabled(false);
 				
-				runSequence(game.getSpeeds());
+				runSequence(game.getSpeed());
 			}
 		});
 		btnStart.setBounds(10, 294, 439, 23);
@@ -177,7 +181,7 @@ public class Interface {
 				
 				lblRoundNumber.setText(game.getRoundNumberString());
 				
-				runSequence(game.getSpeeds());
+				runSequence(game.getSpeed());
 			}
 		});
 		btnAdvance.setBounds(10, 328, 439, 23);
@@ -231,7 +235,7 @@ public class Interface {
 		return play;
 	}
 	
-	private void runSequence(int speeds[]) {
+	private void runSequence(int speed) {
 		Timer timer  = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			int index = 0;
@@ -240,22 +244,22 @@ public class Interface {
 					switch(game.getSequence().get(index)) {
 						case "1": {
 							playSound.playSound("sounds/do.wav");
-							changeSprite(btnGreen, sprites.imgGreen2, sprites.imgGreen, speeds);
+							changeSprite(btnGreen, sprites.imgGreen2, sprites.imgGreen);
 							break;
 						}
 						case "2": {
 							playSound.playSound("sounds/re.wav");
-							changeSprite(btnBlue, sprites.imgBlue2, sprites.imgBlue, speeds);
+							changeSprite(btnBlue, sprites.imgBlue2, sprites.imgBlue);
 							break;
 						}
 						case "3": {
 							playSound.playSound("sounds/mi.wav");
-							changeSprite(btnYellow, sprites.imgYellow2, sprites.imgYellow, speeds);
+							changeSprite(btnYellow, sprites.imgYellow2, sprites.imgYellow);
 							break;
 						}
 						case "4": {
 							playSound.playSound("sounds/fa.wav");
-							changeSprite(btnRed, sprites.imgRed2, sprites.imgRed, speeds);
+							changeSprite(btnRed, sprites.imgRed2, sprites.imgRed);
 							break;
 						}
 					}
@@ -265,10 +269,10 @@ public class Interface {
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(timerTask, 0, speeds[0]);
+		timer.scheduleAtFixedRate(timerTask, 0, speed);
 	}
 	
-	private void changeSprite(JButton button, ImageIcon tempSprite, ImageIcon fixedSprite, int speeds[]) {
+	private void changeSprite(JButton button, ImageIcon tempSprite, ImageIcon fixedSprite) {
 		Timer timer = new Timer();
 		TimerTask timerTask = new TimerTask() {
 			int count = 0;
@@ -282,7 +286,7 @@ public class Interface {
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(timerTask, speeds[1], speeds[2]);
+		timer.scheduleAtFixedRate(timerTask, 0, 150);
 	}
 	
 	private void enableColorButtons() {
