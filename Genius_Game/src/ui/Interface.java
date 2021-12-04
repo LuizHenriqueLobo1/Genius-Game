@@ -40,6 +40,9 @@ public class Interface {
 	private Sprite sprites;
 	private PlaySound playSound;
 	
+	private long timerStart  = 0;
+	private long timerFinish = 0;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -223,8 +226,11 @@ public class Interface {
 		label.setText("");
 		if(play == 1) {
 			label.setText("ACERTOU");
+			addPlayTime();
 			btnAdvance.setEnabled(true);
 		} else if(play == -1) {
+			System.out.println(game.getTimes().toString());
+			game.resetTimes();
 			label.setText("ERROU");
 			disableColorButtons();
 			btnStart.setEnabled(true);
@@ -266,6 +272,7 @@ public class Interface {
 					index++;
 				} else {
 					timer.cancel();
+					timerStart = System.currentTimeMillis();
 				}
 			}
 		};
@@ -287,6 +294,14 @@ public class Interface {
 			}
 		};
 		timer.scheduleAtFixedRate(timerTask, 0, 150);
+	}
+	
+	private void addPlayTime() {
+		timerFinish = System.currentTimeMillis();
+		long timerTotal = (timerFinish - timerStart);
+		game.addTime(timerTotal);
+		timerStart  = 0;
+		timerFinish = 0;
 	}
 	
 	private void enableColorButtons() {
