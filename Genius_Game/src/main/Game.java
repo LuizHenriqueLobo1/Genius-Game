@@ -12,6 +12,7 @@ public class Game {
 	private int difficulty;
 	private int speedLevel;
 	private int speed;
+	private ArrayList<Long> times;
 	private Random random;
 	
 	public Game() {
@@ -22,6 +23,7 @@ public class Game {
 		this.difficulty  = 1;
 		this.speedLevel  = 1;
 		this.speed       = 800;
+		this.times       = new ArrayList<>();
 		this.random      = new Random();
 	}
 	
@@ -129,6 +131,18 @@ public class Game {
 	
 	public int getSpeed() {
 		return this.speed;
+	}
+	
+	public void addTime(long time) {
+		this.times.add(time);
+	}
+	
+	public void resetTimes() {
+		this.times.clear();
+	}
+	
+	public ArrayList<Long> getTimes() {
+		return this.times;
 	}
 	
 	public void changeValueOf(String element) {
