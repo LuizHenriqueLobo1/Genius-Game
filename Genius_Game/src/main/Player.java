@@ -38,12 +38,20 @@ public class Player {
 		this.points++;
 	}
 	
+	public void resetPoints() {
+		this.points = 0;
+	}
+	
 	public int getPoints() {
 		return this.points;
 	}
 
 	public void setTimes(ArrayList<Long> times) {
 		this.times.addAll(times);
+	}
+	
+	public void resetTimes() {
+		this.times.clear();
 	}
 	
 	public ArrayList<Long> getTimes() {

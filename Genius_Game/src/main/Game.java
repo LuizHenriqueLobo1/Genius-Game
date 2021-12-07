@@ -223,8 +223,10 @@ public class Game {
 		if(this.players.get(0).getPoints() == this.players.get(1).getPoints()) {
 			if(analyzePlayersTime() == 1) {
 				playerWinner = 1;
-			} else {
+			} else if(analyzePlayersTime() == 2) {
 				playerWinner = 2;
+			} else {
+				playerWinner = 3;
 			}
 		} else if(this.players.get(0).getPoints() > this.players.get(1).getPoints()) {
 			playerWinner = 1;
@@ -238,18 +240,32 @@ public class Game {
 		int bestPlayer;
 		if(getSumPlayerTime(this.players.get(0)) < getSumPlayerTime(this.players.get(1))) {
 			bestPlayer = 1;
-		} else {
+		} else if(getSumPlayerTime(this.players.get(0)) > getSumPlayerTime(this.players.get(1))) {
 			bestPlayer = 2;
+		} else {
+			bestPlayer = 3;
 		}
 		return bestPlayer;
 	}
 	
 	private long getSumPlayerTime(Player player) {
 		long sumPlayerTime = 0;
-		for(long time: player.getTimes()) {
+		for(long time: player.getTimes())
 			sumPlayerTime += time;
-		}
 		return sumPlayerTime;
+	}
+	
+	public void rematch() {
+		this.matchNumber = 0;
+		for(Player player: this.players) {
+			player.resetTimes();
+			player.resetPoints();
+		}
+	}
+	
+	public void reset() {
+		this.matchNumber = 0;
+		this.players.clear();
 	}
 	
 }
