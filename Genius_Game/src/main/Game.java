@@ -7,27 +7,37 @@ public class Game {
 
 	private ArrayList<String> sequence;
 	private ArrayList<String> mySequence;
+	private int matchNumber;
 	private int controller;
 	private int roundNumber;
 	private int difficulty;
 	private int speedLevel;
 	private int speed;
 	private ArrayList<Long> times;
+	private ArrayList<Player> players;
 	private Random random;
 	
 	public Game() {
 		this.sequence    = new ArrayList<>();
 		this.mySequence  = new ArrayList<>();
+		this.matchNumber = 0;
 		this.controller  = 3;
 		this.roundNumber = 1;
 		this.difficulty  = 1;
 		this.speedLevel  = 1;
 		this.speed       = 800;
 		this.times       = new ArrayList<>();
+		this.players     = new ArrayList<>();
 		this.random      = new Random();
 	}
 	
-	public void startSequence() {
+	public int startSequence() {
+		int status = 1;
+		if(this.matchNumber == 2) {
+			status = 2;
+		} else {
+			this.matchNumber++;
+		}
 		this.resetMySequence();
 		this.updateDifficulty();
 		this.updateSpeedLevel();
@@ -36,6 +46,7 @@ public class Game {
 			String element = Integer.toString(this.random.nextInt(5 - 1) + 1);
 			this.sequence.add(element);
 		}
+		return status;
 	}
 	
 	public void updateSequence() {
@@ -145,6 +156,19 @@ public class Game {
 		return this.times;
 	}
 	
+	public int addPlayer(Player player) {
+		int status = 0;
+		if(this.players.size() < 2) {
+			this.players.add(player);
+			status = 1;
+		}
+		return status;
+	}
+	
+	public ArrayList<Player> getPlayers() {
+		return this.players;
+	}
+	
 	public void changeValueOf(String element) {
 		if(element.equals("Difficulty")) {
 			if(this.difficulty >= 1 && this.difficulty < 3)
@@ -169,6 +193,63 @@ public class Game {
 		if(count == this.sequence.size())
 			winner = 1;
 		return winner;
+	}
+
+	public int getMatchNumber() {
+		return this.matchNumber;
+	}
+	
+	public Player getPlayerOfMatch() {
+		Player player;
+		if(this.matchNumber % 2 != 0) {
+			player = this.players.get(0);
+		} else {
+			player = this.players.get(1);
+		}
+		return player;
+	}
+	
+	public void addPlayerTimes(ArrayList<Long> times) {
+		this.getPlayerOfMatch().setTimes(times);
+		this.getPlayerOfMatch().setBestTime();
+	}
+
+	public void updatePlayerPoints() {
+		this.getPlayerOfMatch().updatePoints();
+	}
+	
+	public int playerWinner() {
+		int playerWinner;
+		if(this.players.get(0).getPoints() == this.players.get(1).getPoints()) {
+			if(analyzePlayersTime() == 1) {
+				playerWinner = 1;
+			} else {
+				playerWinner = 2;
+			}
+		} else if(this.players.get(0).getPoints() > this.players.get(1).getPoints()) {
+			playerWinner = 1;
+		} else {
+			playerWinner = 2;
+		}
+		return playerWinner;
+	}
+	
+	private int analyzePlayersTime() {
+		int bestPlayer;
+		if(getSumPlayerTime(this.players.get(0)) < getSumPlayerTime(this.players.get(1))) {
+			bestPlayer = 1;
+		} else {
+			bestPlayer = 2;
+		}
+		return bestPlayer;
+	}
+	
+	private long getSumPlayerTime(Player player) {
+		long sumPlayerTime = 0;
+		for(long time: player.getTimes()) {
+			sumPlayerTime += time;
+		}
+		return sumPlayerTime;
 	}
 	
 }
