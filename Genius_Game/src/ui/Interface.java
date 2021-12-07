@@ -43,6 +43,7 @@ public class Interface {
 	private JButton btnAdvance;
 	private JButton btnDifficulty;
 	private JButton btnSpeed;
+	private JLabel lblPlayer;
 	
 	private Game game;
 	private Sprite sprites;
@@ -168,7 +169,7 @@ public class Interface {
 		lblStatus.setBounds(389, 10, 60, 14);
 		panelGame.add(lblStatus);
 		
-		JLabel lblPlayer = new JLabel("");
+		lblPlayer = new JLabel("");
 		lblPlayer.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPlayer.setBounds(348, 372, 101, 14);
 		panelGame.add(lblPlayer);
@@ -420,6 +421,10 @@ public class Interface {
 		btnRematch = new JButton("Revanche");
 		btnRematch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				game.rematch();
+				btnStart.setEnabled(true);
+				enableColorButtons();
+				changePanel(2, 1);
 			}
 		});
 		btnRematch.setBounds(60, 370, 156, 23);
@@ -428,22 +433,26 @@ public class Interface {
 		btnRestart = new JButton("Mudar Jogadores");
 		btnRestart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				game.reset();
+				btnStart.setEnabled(true);
+				enableColorButtons();
+				changePanel(2, 0);
 			}
 		});
 		btnRestart.setBounds(238, 370, 156, 23);
 		panelReport.add(btnRestart);
 	}
 	
-	private int play(String element, JLabel label) {
+	private int play(String element, JLabel lblStatus) {
 		int play = game.makePlay(element);
-		label.setText("");
+		lblStatus.setText("");
 		if(play == 1) {
-			label.setText("ACERTOU");
+			lblStatus.setText("ACERTOU");
 			game.updatePlayerPoints();
 			addPlayTime();
 			btnAdvance.setEnabled(true);
 		} else if(play == -1) {
-			label.setText("ERROU");
+			lblStatus.setText("ERROU");
 			game.addPlayerTimes(game.getTimes());
 			game.resetTimes();
 			disableColorButtons();
@@ -451,6 +460,10 @@ public class Interface {
 				btnStart.setEnabled(true);
 			} else {
 				JOptionPane.showMessageDialog(null, "O jogo acabou! Confirme para verificar os resultados.");
+				lblStatus.setText("");
+				lblPlayer.setText("");
+				btnDifficulty.setEnabled(true);
+				btnSpeed.setEnabled(true);
 				changePanel(1, 2);
 				loadReport();
 			}
@@ -550,9 +563,12 @@ public class Interface {
 		if(game.playerWinner() == 1) {
 			lblFirstPlayerStatus.setText("VENCEU");
 			lblSecondPlayerStatus.setText("PERDEU");
-		} else {
+		} else if(game.playerWinner() == 2) {
 			lblFirstPlayerStatus.setText("PERDEU");
 			lblSecondPlayerStatus.setText("VENCEU");
+		} else {
+			lblFirstPlayerStatus.setText("EMPATOU");
+			lblSecondPlayerStatus.setText("EMPATOU");
 		}
 	}
 	
