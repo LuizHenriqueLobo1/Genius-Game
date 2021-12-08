@@ -45,6 +45,16 @@ public class Player {
 	public int getPoints() {
 		return this.points;
 	}
+	
+	public String getPointsFormatted() {
+		String strPoints = "";
+		if(this.points == 1) {
+			strPoints = Integer.toString(this.points) + " ponto -";
+		} else {
+			strPoints = Integer.toString(this.points) + " pontos -";
+		}
+		return strPoints;
+	}
 
 	public void setTimes(ArrayList<Long> times) {
 		this.times.addAll(times);
