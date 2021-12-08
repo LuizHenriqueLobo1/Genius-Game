@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Game {
 
@@ -15,6 +17,7 @@ public class Game {
 	private int speed;
 	private ArrayList<Long> times;
 	private ArrayList<Player> players;
+	private String date;
 	private Random random;
 	
 	public Game() {
@@ -28,6 +31,7 @@ public class Game {
 		this.speed       = 800;
 		this.times       = new ArrayList<>();
 		this.players     = new ArrayList<>();
+		this.date        = "";
 		this.random      = new Random();
 	}
 	
@@ -167,6 +171,15 @@ public class Game {
 	
 	public ArrayList<Player> getPlayers() {
 		return this.players;
+	}
+	
+	public void setDate() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		this.date = dtf.format(LocalDateTime.now());
+	}
+	
+	public String getDate() {
+		return this.date;
 	}
 	
 	public void changeValueOf(String element) {

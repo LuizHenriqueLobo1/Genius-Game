@@ -52,12 +52,15 @@ public class Interface {
 	private long timerStart  = 0;
 	private long timerFinish = 0;
 	
+	private JLabel lblDate;
 	private JLabel lblFirstPlayerStatus;
+	private JLabel lblFirstPlayerPoints;
 	private JTextField textFirstPlayerName;
 	private JTextField textFirstPlayerNick;
 	private JTextField textFirstPlayerTimes;
 	private JTextField textFirstPlayerBestTime;
 	private JLabel lblSecondPlayerStatus;
+	private JLabel lblSecondPlayerPoints;
 	private JTextField textSecondPlayerName;
 	private JTextField textSecondPlayerNick;
 	private JTextField textSecondPlayerTimes;
@@ -136,6 +139,7 @@ public class Interface {
 					}
 					if(game.getPlayers().size() == 2) {
 						JOptionPane.showMessageDialog(null, "Continuando para o jogo...");
+						game.setDate();
 						changePanel(0, 1);
 					}
 				}
@@ -300,10 +304,14 @@ public class Interface {
 		tabbedPane.setEnabledAt(2, false);
 		panelReport.setLayout(null);
 		
+		lblDate = new JLabel("DATA");
+		lblDate.setBounds(10, 56, 72, 14);
+		panelReport.add(lblDate);
+		
 		JLabel lblReportTitle = new JLabel("Relat\u00F3rio Final do Jogo");
 		lblReportTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReportTitle.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblReportTitle.setBounds(10, 30, 439, 32);
+		lblReportTitle.setBounds(10, 20, 439, 32);
 		panelReport.add(lblReportTitle);
 		
 		JSeparator separator1 = new JSeparator();
@@ -441,6 +449,14 @@ public class Interface {
 		});
 		btnRestart.setBounds(238, 370, 156, 23);
 		panelReport.add(btnRestart);
+		
+		lblFirstPlayerPoints = new JLabel("PONTOS");
+		lblFirstPlayerPoints.setBounds(340, 105, 80, 14);
+		panelReport.add(lblFirstPlayerPoints);
+		
+		lblSecondPlayerPoints = new JLabel("PONTOS");
+		lblSecondPlayerPoints.setBounds(340, 240, 80, 14);
+		panelReport.add(lblSecondPlayerPoints);
 	}
 	
 	private int play(String element, JLabel lblStatus) {
@@ -462,13 +478,15 @@ public class Interface {
 				JOptionPane.showMessageDialog(null, "O jogo acabou! Confirme para verificar os resultados.");
 				lblStatus.setText("");
 				lblPlayer.setText("");
+				lblDate.setText(game.getDate());
 				btnDifficulty.setEnabled(true);
 				btnSpeed.setEnabled(true);
 				changePanel(1, 2);
 				loadReport();
 			}
-		} else if(play == -2)
+		} else if(play == -2) {
 			JOptionPane.showMessageDialog(null, "Você não pode jogar neste momento!");
+		}
 		return play;
 	}
 	
@@ -555,11 +573,13 @@ public class Interface {
 		textFirstPlayerNick.setText(firstPlayer.getNick());
 		textFirstPlayerTimes.setText(firstPlayer.getTimesFormatted());
 		textFirstPlayerBestTime.setText(firstPlayer.getBestTimeFormatted());
+		lblFirstPlayerPoints.setText(firstPlayer.getPointsFormatted());
 		Player secondPlayer = game.getPlayers().get(1);
 		textSecondPlayerName.setText(secondPlayer.getName());
 		textSecondPlayerNick.setText(secondPlayer.getNick());
 		textSecondPlayerTimes.setText(secondPlayer.getTimesFormatted());
 		textSecondPlayerBestTime.setText(secondPlayer.getBestTimeFormatted());
+		lblSecondPlayerPoints.setText(secondPlayer.getPointsFormatted());
 		if(game.playerWinner() == 1) {
 			lblFirstPlayerStatus.setText("VENCEU");
 			lblSecondPlayerStatus.setText("PERDEU");
@@ -577,5 +597,5 @@ public class Interface {
 		tabbedPane.setEnabledAt(panelDestiny, true);
 		tabbedPane.setSelectedIndex(panelDestiny);
 	}
-	
+
 }
