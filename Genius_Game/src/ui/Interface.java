@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -125,23 +126,32 @@ public class Interface {
 		textNick.setColumns(10);
 		textNick.setBounds(184, 188, 134, 20);
 		panelStart.add(textNick);
-		
-		btnRegister = new JButton("Cadastrar Jogador");
+		btnRegister = new JButton("Cadastrar Jogador 1");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textName.getText().length() <= 3 || textNick.getText().length() <= 2) {
-					JOptionPane.showMessageDialog(null, "Preencha os campos com valores válidos!");
-				} else {
-					Player player = new Player(textName.getText(), textNick.getText());
-					int statusAddPlayer = game.addPlayer(player);
-					if(statusAddPlayer == 1) {
-						textName.setText("");
-						textNick.setText("");
-					}
-					if(game.getPlayers().size() == 2) {
-						JOptionPane.showMessageDialog(null, "Continuando para o jogo...");
-						game.setDate();
-						changePanel(0, 1);
+				if(Objects.equals(System.getenv("DEBUG_MODE"), "true")){
+					Player player1 = new Player("caio", "caito");
+					Player player2 = new Player("luiz", "lobo");
+					game.addPlayer(player1);
+					game.addPlayer(player2);
+					game.setDate();
+					changePanel(0, 1);
+				}else{
+					if (textName.getText().length() <= 3 || textNick.getText().length() <= 2) {
+						JOptionPane.showMessageDialog(null, "Preencha os campos com valores válidos!");
+					} else {
+						Player player = new Player(textName.getText(), textNick.getText());
+						int statusAddPlayer = game.addPlayer(player);
+						if (statusAddPlayer == 1) {
+							btnRegister.setText("Cadastrar Jogador 2");
+							textName.setText("");
+							textNick.setText("");
+						}
+						if (game.getPlayers().size() == 2) {
+							JOptionPane.showMessageDialog(null, "Continuando para o jogo...");
+							game.setDate();
+							changePanel(0, 1);
+						}
 					}
 				}
 			}
