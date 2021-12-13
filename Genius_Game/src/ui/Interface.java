@@ -40,6 +40,7 @@ public class Interface {
 	private JButton btnYellow;
 	private JButton btnRed;
 	private JButton btnStart;
+	private JButton btnSave;
 	private JButton btnAdvance;
 	private JButton btnDifficulty;
 	private JButton btnSpeed;
@@ -225,6 +226,16 @@ public class Interface {
 		});
 		btnRed.setBounds(273, 156, 176, 110);
 		panelGame.add(btnRed);
+
+		btnSave = new JButton("Salvar o jogo");
+		btnSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.out.println("caio!");
+			}
+		});
+
+		btnSave.setBounds(10, 270, 439, 23);
+		panelGame.add(btnSave);
 		
 		btnStart = new JButton("Iniciar");
 		btnStart.addActionListener(new ActionListener() {
