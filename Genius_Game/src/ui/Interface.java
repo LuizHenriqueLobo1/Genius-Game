@@ -105,23 +105,33 @@ public class Interface {
 		frame.getContentPane().add(tabbedPane);
 		
 		// Início
+		buildRegisterPanel();
+
+		// Jogo
+		buildMainGamePanel();
+
+		// Relatório
+		buildReportPanel();
+	}
+
+	private void buildRegisterPanel() {
 		panelStart = new JPanel();
 		tabbedPane.addTab("Inicio", null, panelStart, null);
 		panelStart.setLayout(null);
-		
+
 		JLabel lblPlayerName = new JLabel("Nome:");
 		lblPlayerName.setBounds(134, 155, 46, 14);
 		panelStart.add(lblPlayerName);
-		
+
 		textName = new JTextField();
 		textName.setBounds(184, 152, 134, 20);
 		panelStart.add(textName);
 		textName.setColumns(10);
-		
+
 		JLabel lblNick = new JLabel("Apelido:");
 		lblNick.setBounds(134, 191, 52, 14);
 		panelStart.add(lblNick);
-		
+
 		textNick = new JTextField();
 		textNick.setColumns(10);
 		textNick.setBounds(184, 188, 134, 20);
@@ -158,37 +168,38 @@ public class Interface {
 		});
 		btnRegister.setBounds(134, 228, 184, 23);
 		panelStart.add(btnRegister);
-		
+
 		JLabel lblTitle = new JLabel("Campeonato de Genius");
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setBounds(10, 32, 439, 50);
 		panelStart.add(lblTitle);
-		
-		// Jogo
+	}
+
+	private void buildMainGamePanel() {
 		panelGame = new JPanel();
 		tabbedPane.addTab("Jogo", null, panelGame, null);
 		tabbedPane.setEnabledAt(1, false);
 		panelGame.setLayout(null);
-		
+
 		JLabel lblRound = new JLabel("Rodada:");
 		lblRound.setBounds(10, 10, 60, 14);
 		panelGame.add(lblRound);
-		
+
 		JLabel lblRoundNumber = new JLabel("1");
 		lblRoundNumber.setBounds(60, 10, 20, 14);
 		panelGame.add(lblRoundNumber);
-		
+
 		JLabel lblStatus = new JLabel("");
 		lblStatus.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblStatus.setBounds(389, 10, 60, 14);
 		panelGame.add(lblStatus);
-		
+
 		lblPlayer = new JLabel("");
 		lblPlayer.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPlayer.setBounds(348, 372, 101, 14);
 		panelGame.add(lblPlayer);
-		
+
 		btnGreen = new JButton(sprites.imgGreen);
 		btnGreen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -200,7 +211,7 @@ public class Interface {
 		});
 		btnGreen.setBounds(10, 35, 176, 110);
 		panelGame.add(btnGreen);
-		
+
 		btnBlue = new JButton(sprites.imgBlue);
 		btnBlue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -212,7 +223,7 @@ public class Interface {
 		});
 		btnBlue.setBounds(273, 35, 176, 110);
 		panelGame.add(btnBlue);
-		
+
 		btnYellow = new JButton(sprites.imgYellow);
 		btnYellow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -224,14 +235,14 @@ public class Interface {
 		});
 		btnYellow.setBounds(10, 156, 176, 110);
 		panelGame.add(btnYellow);
-		
+
 		btnRed = new JButton(sprites.imgRed);
 		btnRed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(play("4", lblStatus) != -2) {
 					changeSprite(btnRed, sprites.imgRed2, sprites.imgRed);
 					playSound.playSound("sounds/fa.wav");
-				}				
+				}
 			}
 		});
 		btnRed.setBounds(273, 156, 176, 110);
@@ -246,55 +257,55 @@ public class Interface {
 
 		btnSave.setBounds(10, 270, 439, 23);
 		panelGame.add(btnSave);
-		
+
 		btnStart = new JButton("Iniciar");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				game.resetSequence();
 				if(game.startSequence() == 2)
 					btnStart.setEnabled(false);
-				
+
 				lblPlayer.setText(game.getPlayerOfMatch().getNick());
-				
+
 				enableColorButtons();
-				
+
 				lblStatus.setText("");
 				lblRoundNumber.setText("1");
 				btnStart.setEnabled(false);
 				btnAdvance.setEnabled(false);
 				btnDifficulty.setEnabled(false);
 				btnSpeed.setEnabled(false);
-				
+
 				runSequence(game.getSpeed());
 			}
 		});
 		btnStart.setBounds(10, 294, 439, 23);
 		panelGame.add(btnStart);
-		
+
 		btnAdvance = new JButton("Avan\u00E7ar");
 		btnAdvance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				game.updateSequence();
-				
+
 				lblStatus.setText("");
 				btnStart.setEnabled(false);
 				btnAdvance.setEnabled(false);
-				
+
 				lblRoundNumber.setText(game.getRoundNumberString());
-				
+
 				runSequence(game.getSpeed());
 			}
 		});
 		btnAdvance.setBounds(10, 328, 439, 23);
 		btnAdvance.setEnabled(false);
 		panelGame.add(btnAdvance);
-		
+
 		JLabel lblDifficulty = new JLabel("Dificuldade:");
 		lblDifficulty.setBounds(10, 372, 76, 14);
 		panelGame.add(lblDifficulty);
-		
+
 		btnDifficulty = new JButton("1");
 		btnDifficulty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -304,11 +315,11 @@ public class Interface {
 		});
 		btnDifficulty.setBounds(80, 368, 42, 23);
 		panelGame.add(btnDifficulty);
-		
+
 		JLabel lblSpeed = new JLabel("Velocidade:");
 		lblSpeed.setBounds(132, 372, 76, 14);
 		panelGame.add(lblSpeed);
-		
+
 		btnSpeed = new JButton("1");
 		btnSpeed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -318,135 +329,136 @@ public class Interface {
 		});
 		btnSpeed.setBounds(202, 368, 42, 23);
 		panelGame.add(btnSpeed);
-		
-		// Relatório
+	}
+
+	private void buildReportPanel() {
 		panelReport = new JPanel();
 		tabbedPane.addTab("Relatorio", null, panelReport, null);
 		tabbedPane.setEnabledAt(2, false);
 		panelReport.setLayout(null);
-		
+
 		lblDate = new JLabel("DATA");
 		lblDate.setBounds(10, 56, 72, 14);
 		panelReport.add(lblDate);
-		
+
 		JLabel lblReportTitle = new JLabel("Relat\u00F3rio Final do Jogo");
 		lblReportTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReportTitle.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblReportTitle.setBounds(10, 20, 439, 32);
 		panelReport.add(lblReportTitle);
-		
+
 		JSeparator separator1 = new JSeparator();
 		separator1.setBounds(10, 81, 439, 2);
 		panelReport.add(separator1);
-		
+
 		JLabel lblFirstPlayer = new JLabel("Jogador 1");
 		lblFirstPlayer.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblFirstPlayer.setBounds(10, 94, 84, 32);
 		panelReport.add(lblFirstPlayer);
-		
+
 		lblFirstPlayerStatus = new JLabel("STATUS");
 		lblFirstPlayerStatus.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFirstPlayerStatus.setBounds(365, 105, 84, 14);
 		panelReport.add(lblFirstPlayerStatus);
-		
+
 		JLabel lblFirstPlayerName = new JLabel("Nome:");
 		lblFirstPlayerName.setBounds(10, 140, 58, 14);
 		panelReport.add(lblFirstPlayerName);
-		
+
 		textFirstPlayerName = new JTextField();
 		textFirstPlayerName.setBounds(60, 137, 120, 20);
 		panelReport.add(textFirstPlayerName);
 		textFirstPlayerName.setColumns(10);
 		textFirstPlayerName.setEditable(false);
-		
+
 		JLabel lblFirstPlayerNick = new JLabel("Apelido:");
 		lblFirstPlayerNick.setBounds(10, 170, 46, 14);
 		panelReport.add(lblFirstPlayerNick);
-		
+
 		textFirstPlayerNick = new JTextField();
 		textFirstPlayerNick.setBounds(60, 165, 120, 20);
 		panelReport.add(textFirstPlayerNick);
 		textFirstPlayerNick.setColumns(10);
 		textFirstPlayerNick.setEditable(false);
-		
+
 		JLabel lblFirstPlayerTimes = new JLabel("Tempos:");
 		lblFirstPlayerTimes.setBounds(210, 140, 58, 14);
 		panelReport.add(lblFirstPlayerTimes);
-		
+
 		textFirstPlayerTimes = new JTextField();
 		textFirstPlayerTimes.setBounds(265, 137, 184, 20);
 		panelReport.add(textFirstPlayerTimes);
 		textFirstPlayerTimes.setColumns(10);
 		textFirstPlayerTimes.setEditable(false);
-		
+
 		JLabel lblFirstPlayerBestTime = new JLabel("Melhor jogada:");
 		lblFirstPlayerBestTime.setBounds(210, 170, 96, 14);
 		panelReport.add(lblFirstPlayerBestTime);
-		
+
 		textFirstPlayerBestTime = new JTextField();
 		textFirstPlayerBestTime.setBounds(299, 167, 150, 20);
 		panelReport.add(textFirstPlayerBestTime);
 		textFirstPlayerBestTime.setColumns(10);
 		textFirstPlayerBestTime.setEditable(false);
-		
+
 		JSeparator separator2 = new JSeparator();
 		separator2.setBounds(10, 216, 439, 2);
 		panelReport.add(separator2);
-		
+
 		JLabel lblSecondPlayer = new JLabel("Jogador 2");
 		lblSecondPlayer.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSecondPlayer.setBounds(10, 229, 84, 32);
 		panelReport.add(lblSecondPlayer);
-		
+
 		lblSecondPlayerStatus = new JLabel("STATUS");
 		lblSecondPlayerStatus.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSecondPlayerStatus.setBounds(365, 240, 84, 14);
 		panelReport.add(lblSecondPlayerStatus);
-		
+
 		JLabel lblSecondPlayerName = new JLabel("Nome:");
 		lblSecondPlayerName.setBounds(10, 275, 58, 14);
 		panelReport.add(lblSecondPlayerName);
-		
+
 		textSecondPlayerName = new JTextField();
 		textSecondPlayerName.setEditable(false);
 		textSecondPlayerName.setColumns(10);
 		textSecondPlayerName.setBounds(60, 272, 120, 20);
 		panelReport.add(textSecondPlayerName);
-		
+
 		JLabel lblSecondPlayerNick = new JLabel("Apelido:");
 		lblSecondPlayerNick.setBounds(10, 305, 46, 14);
 		panelReport.add(lblSecondPlayerNick);
-		
+
 		textSecondPlayerNick = new JTextField();
 		textSecondPlayerNick.setEditable(false);
 		textSecondPlayerNick.setColumns(10);
 		textSecondPlayerNick.setBounds(60, 300, 120, 20);
 		panelReport.add(textSecondPlayerNick);
-		
+
 		JLabel lblSecondPlayerTimes = new JLabel("Tempos:");
 		lblSecondPlayerTimes.setBounds(210, 275, 58, 14);
 		panelReport.add(lblSecondPlayerTimes);
-		
+
 		textSecondPlayerTimes = new JTextField();
 		textSecondPlayerTimes.setEditable(false);
 		textSecondPlayerTimes.setColumns(10);
 		textSecondPlayerTimes.setBounds(265, 272, 184, 20);
 		panelReport.add(textSecondPlayerTimes);
-		
+
 		JLabel lblSecondPlayerBestTime = new JLabel("Melhor jogada:");
 		lblSecondPlayerBestTime.setBounds(210, 305, 96, 14);
 		panelReport.add(lblSecondPlayerBestTime);
-		
+
 		textSecondPlayerBestTime = new JTextField();
 		textSecondPlayerBestTime.setEditable(false);
 		textSecondPlayerBestTime.setColumns(10);
 		textSecondPlayerBestTime.setBounds(299, 302, 150, 20);
 		panelReport.add(textSecondPlayerBestTime);
-		
+
 		JSeparator separator3 = new JSeparator();
 		separator3.setBounds(10, 351, 439, 2);
 		panelReport.add(separator3);
-		
+
 		btnRematch = new JButton("Revanche");
 		btnRematch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -458,7 +470,7 @@ public class Interface {
 		});
 		btnRematch.setBounds(60, 370, 156, 23);
 		panelReport.add(btnRematch);
-		
+
 		btnRestart = new JButton("Mudar Jogadores");
 		btnRestart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -470,16 +482,16 @@ public class Interface {
 		});
 		btnRestart.setBounds(238, 370, 156, 23);
 		panelReport.add(btnRestart);
-		
+
 		lblFirstPlayerPoints = new JLabel("PONTOS");
 		lblFirstPlayerPoints.setBounds(340, 105, 80, 14);
 		panelReport.add(lblFirstPlayerPoints);
-		
+
 		lblSecondPlayerPoints = new JLabel("PONTOS");
 		lblSecondPlayerPoints.setBounds(340, 240, 80, 14);
 		panelReport.add(lblSecondPlayerPoints);
 	}
-	
+
 	private int play(String element, JLabel lblStatus) {
 		int play = game.makePlay(element);
 		lblStatus.setText("");
