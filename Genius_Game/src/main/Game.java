@@ -1,12 +1,16 @@
 package main;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Game {
+public class Game implements Serializable {
 
+	@Serial
+	private static final long serialVersionUID = 1L;
 	private ArrayList<String> sequence;
 	private ArrayList<String> mySequence;
 	private int matchNumber;

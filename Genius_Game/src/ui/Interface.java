@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 
+import java.io.*;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +26,7 @@ import main.Player;
 
 public class Interface {
 
+	public static final String SAVED_GAME_PATH = "savedGame";
 	private JFrame frame;
 	
 	private JTabbedPane tabbedPane;
@@ -42,6 +44,7 @@ public class Interface {
 	private JButton btnRed;
 	private JButton btnStart;
 	private JButton btnSave;
+	private JButton btnLoadGame;
 	private JButton btnAdvance;
 	private JButton btnDifficulty;
 	private JButton btnSpeed;
@@ -95,7 +98,7 @@ public class Interface {
 		frame.setLocationRelativeTo(null);
 		frame.setTitle("Genius");
 		frame.getContentPane().setLayout(null);
-		
+
 		game = new Game();
 		sprites = new Sprite();
 		playSound = new PlaySound();
@@ -119,6 +122,11 @@ public class Interface {
 		tabbedPane.addTab("Inicio", null, panelStart, null);
 		panelStart.setLayout(null);
 
+		File f = new File(SAVED_GAME_PATH);
+		if(f.isFile()) {
+			showLoadGameButton();
+		}
+
 		JLabel lblPlayerName = new JLabel("Nome:");
 		lblPlayerName.setBounds(134, 155, 46, 14);
 		panelStart.add(lblPlayerName);
@@ -140,8 +148,8 @@ public class Interface {
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Objects.equals(System.getenv("DEBUG_MODE"), "true")){
-					Player player1 = new Player("caio", "caito");
-					Player player2 = new Player("luiz", "lobo");
+					Player player1 = new Player("debug", "debug");
+					Player player2 = new Player("mode", "mode");
 					game.addPlayer(player1);
 					game.addPlayer(player2);
 					game.setDate();
@@ -174,6 +182,31 @@ public class Interface {
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setBounds(10, 32, 439, 50);
 		panelStart.add(lblTitle);
+	}
+
+	private void showLoadGameButton() {
+		btnLoadGame = new JButton("Carregar jogo salvo");
+		btnLoadGame.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				try {
+					FileInputStream fi = new FileInputStream(SAVED_GAME_PATH);
+					ObjectInputStream oi = new ObjectInputStream(fi);
+					game = (Game) oi.readObject();
+					oi.close();
+					fi.close();
+					JOptionPane.showMessageDialog(null, "Continuando para o jogo...");
+//					game.setDate();
+					changePanel(0, 1);
+//
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				System.out.println("Jogo carregado!");
+			}
+		});
+
+		btnLoadGame.setBounds(10, 270, 439, 23);
+		panelStart.add(btnLoadGame);
 	}
 
 	private void buildMainGamePanel() {
@@ -251,7 +284,16 @@ public class Interface {
 		btnSave = new JButton("Salvar o jogo");
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				System.out.println("caio!");
+				try {
+					FileOutputStream f = new FileOutputStream(new File(SAVED_GAME_PATH));
+					ObjectOutputStream o = new ObjectOutputStream(f);
+					o.writeObject(game);
+					o.close();
+					f.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+				System.out.println("Jogo salvo!");
 			}
 		});
 
