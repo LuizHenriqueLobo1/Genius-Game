@@ -308,12 +308,13 @@ public class Interface {
 				if(game.startSequence() == 2)
 					btnStart.setEnabled(false);
 
-				lblPlayer.setText(game.getPlayerOfMatch().getNick());
+				Player playerOfMatch = game.getPlayerOfMatch();
+				lblPlayer.setText(playerOfMatch.getNick());
 
 				enableColorButtons();
 
 				lblStatus.setText("");
-				lblRoundNumber.setText("1");
+				lblRoundNumber.setText(Integer.toString(playerOfMatch.getPoints() + 1));
 				btnStart.setEnabled(false);
 				btnAdvance.setEnabled(false);
 				btnDifficulty.setEnabled(false);
