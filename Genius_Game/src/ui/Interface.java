@@ -293,7 +293,7 @@ public class Interface {
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-				System.out.println("Jogo salvo!");
+				JOptionPane.showMessageDialog(null, "Jogo salvo!");
 			}
 		});
 
