@@ -17,7 +17,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 
 import java.io.*;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,6 +47,7 @@ public class Interface {
 	private JButton btnAdvance;
 	private JButton btnDifficulty;
 	private JButton btnSpeed;
+	private JLabel lblStatus;
 	private JLabel lblPlayer;
 	
 	private Game game;
@@ -73,7 +73,6 @@ public class Interface {
 	private JTextField textSecondPlayerBestTime;
 	private JButton btnRematch;
 	private JButton btnRestart;
-	private JLabel lblStatus;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -175,7 +174,7 @@ public class Interface {
 	}
 
 	private void showLoadGameButton() {
-		btnLoadGame = new JButton("Carregar jogo salvo");
+		btnLoadGame = new JButton("Carregar Jogo Salvo");
 		btnLoadGame.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try {
@@ -192,15 +191,13 @@ public class Interface {
 					btnDifficulty.setEnabled(false);
 					btnSpeed.setEnabled(false);
 					changePanel(0, 1);
-
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				System.out.println("Jogo carregado!");
 			}
 		});
 
-		btnLoadGame.setBounds(10, 270, 439, 23);
+		btnLoadGame.setBounds(10, 350, 439, 23);
 		panelStart.add(btnLoadGame);
 	}
 
@@ -225,7 +222,7 @@ public class Interface {
 
 		lblPlayer = new JLabel("");
 		lblPlayer.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPlayer.setBounds(348, 372, 101, 14);
+		lblPlayer.setBounds(300, 378, 101, 14);
 		panelGame.add(lblPlayer);
 
 		btnGreen = new JButton(sprites.imgGreen);
@@ -276,7 +273,7 @@ public class Interface {
 		btnRed.setBounds(273, 156, 176, 110);
 		panelGame.add(btnRed);
 
-		btnSave = new JButton("Salvar o jogo");
+		btnSave = new JButton("Salvar Jogo");
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try {
@@ -292,7 +289,7 @@ public class Interface {
 			}
 		});
 		btnSave.setEnabled(false);
-		btnSave.setBounds(10, 270, 439, 23);
+		btnSave.setBounds(10, 280, 439, 23);
 		panelGame.add(btnSave);
 
 		btnStart = new JButton("Iniciar");
@@ -314,7 +311,7 @@ public class Interface {
 				runSequence(game.getSpeed());
 			}
 		});
-		btnStart.setBounds(10, 294, 439, 23);
+		btnStart.setBounds(10, 310, 439, 23);
 		panelGame.add(btnStart);
 
 		btnAdvance = new JButton("Avan\u00E7ar");
@@ -325,12 +322,12 @@ public class Interface {
 				setGameState(lblStatus);
 			}
 		});
-		btnAdvance.setBounds(10, 328, 439, 23);
+		btnAdvance.setBounds(10, 340, 439, 23);
 		btnAdvance.setEnabled(false);
 		panelGame.add(btnAdvance);
 
 		JLabel lblDifficulty = new JLabel("Dificuldade:");
-		lblDifficulty.setBounds(10, 372, 76, 14);
+		lblDifficulty.setBounds(10, 378, 76, 14);
 		panelGame.add(lblDifficulty);
 
 		btnDifficulty = new JButton("1");
@@ -340,11 +337,11 @@ public class Interface {
 				btnDifficulty.setText(game.getDifficultyString());
 			}
 		});
-		btnDifficulty.setBounds(80, 368, 42, 23);
+		btnDifficulty.setBounds(80, 374, 42, 23);
 		panelGame.add(btnDifficulty);
 
 		JLabel lblSpeed = new JLabel("Velocidade:");
-		lblSpeed.setBounds(132, 372, 76, 14);
+		lblSpeed.setBounds(132, 378, 76, 14);
 		panelGame.add(lblSpeed);
 
 		btnSpeed = new JButton("1");
@@ -354,7 +351,7 @@ public class Interface {
 				btnSpeed.setText(game.getSpeedLevelString());
 			}
 		});
-		btnSpeed.setBounds(202, 368, 42, 23);
+		btnSpeed.setBounds(202, 374, 42, 23);
 		panelGame.add(btnSpeed);
 	}
 
