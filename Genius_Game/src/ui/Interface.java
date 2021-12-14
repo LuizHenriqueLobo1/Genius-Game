@@ -58,6 +58,7 @@ public class Interface {
 	private long timerFinish = 0;
 	
 	private JLabel lblDate;
+	private JLabel lblRoundNumber;
 	private JLabel lblFirstPlayerStatus;
 	private JLabel lblFirstPlayerPoints;
 	private JTextField textFirstPlayerName;
@@ -72,7 +73,8 @@ public class Interface {
 	private JTextField textSecondPlayerBestTime;
 	private JButton btnRematch;
 	private JButton btnRestart;
-	
+	private JLabel lblStatus;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -107,13 +109,10 @@ public class Interface {
 		tabbedPane.setBounds(10, 11, 464, 439);
 		frame.getContentPane().add(tabbedPane);
 		
-		// Início
 		buildRegisterPanel();
 
-		// Jogo
 		buildMainGamePanel();
 
-		// Relatório
 		buildReportPanel();
 	}
 
@@ -147,29 +146,20 @@ public class Interface {
 		btnRegister = new JButton("Cadastrar Jogador 1");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Objects.equals(System.getenv("DEBUG_MODE"), "true")){
-					Player player1 = new Player("debug", "debug");
-					Player player2 = new Player("mode", "mode");
-					game.addPlayer(player1);
-					game.addPlayer(player2);
-					game.setDate();
-					changePanel(0, 1);
-				}else{
-					if (textName.getText().length() <= 3 || textNick.getText().length() <= 2) {
-						JOptionPane.showMessageDialog(null, "Preencha os campos com valores válidos!");
-					} else {
-						Player player = new Player(textName.getText(), textNick.getText());
-						int statusAddPlayer = game.addPlayer(player);
-						if (statusAddPlayer == 1) {
-							btnRegister.setText("Cadastrar Jogador 2");
-							textName.setText("");
-							textNick.setText("");
-						}
-						if (game.getPlayers().size() == 2) {
-							JOptionPane.showMessageDialog(null, "Continuando para o jogo...");
-							game.setDate();
-							changePanel(0, 1);
-						}
+				if (textName.getText().length() <= 3 || textNick.getText().length() <= 2) {
+					JOptionPane.showMessageDialog(null, "Preencha os campos com valores válidos!");
+				} else {
+					Player player = new Player(textName.getText(), textNick.getText());
+					int statusAddPlayer = game.addPlayer(player);
+					if (statusAddPlayer == 1) {
+						btnRegister.setText("Cadastrar Jogador 2");
+						textName.setText("");
+						textNick.setText("");
+					}
+					if (game.getPlayers().size() == 2) {
+						JOptionPane.showMessageDialog(null, "Continuando para o jogo...");
+						game.setDate();
+						changePanel(0, 1);
 					}
 				}
 			}
@@ -195,9 +185,14 @@ public class Interface {
 					oi.close();
 					fi.close();
 					JOptionPane.showMessageDialog(null, "Continuando para o jogo...");
-//					game.setDate();
+					setGameState(lblStatus);
+					setPlayerAndRoundLabels();
+					btnDifficulty.setText(game.getDifficultyString());
+					btnSpeed.setText(game.getSpeedLevelString());
+					btnDifficulty.setEnabled(false);
+					btnSpeed.setEnabled(false);
 					changePanel(0, 1);
-//
+
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -219,11 +214,11 @@ public class Interface {
 		lblRound.setBounds(10, 10, 60, 14);
 		panelGame.add(lblRound);
 
-		JLabel lblRoundNumber = new JLabel("1");
+		lblRoundNumber = new JLabel("1");
 		lblRoundNumber.setBounds(60, 10, 20, 14);
 		panelGame.add(lblRoundNumber);
 
-		JLabel lblStatus = new JLabel("");
+		lblStatus = new JLabel("");
 		lblStatus.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblStatus.setBounds(389, 10, 60, 14);
 		panelGame.add(lblStatus);
@@ -296,7 +291,7 @@ public class Interface {
 				JOptionPane.showMessageDialog(null, "Jogo salvo!");
 			}
 		});
-
+		btnSave.setEnabled(false);
 		btnSave.setBounds(10, 270, 439, 23);
 		panelGame.add(btnSave);
 
@@ -308,13 +303,9 @@ public class Interface {
 				if(game.startSequence() == 2)
 					btnStart.setEnabled(false);
 
-				Player playerOfMatch = game.getPlayerOfMatch();
-				lblPlayer.setText(playerOfMatch.getNick());
-
 				enableColorButtons();
 
-				lblStatus.setText("");
-				lblRoundNumber.setText(Integer.toString(playerOfMatch.getPoints() + 1));
+				setPlayerAndRoundLabels();
 				btnStart.setEnabled(false);
 				btnAdvance.setEnabled(false);
 				btnDifficulty.setEnabled(false);
@@ -329,16 +320,9 @@ public class Interface {
 		btnAdvance = new JButton("Avan\u00E7ar");
 		btnAdvance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				btnSave.setEnabled(true);
 				game.updateSequence();
-
-				lblStatus.setText("");
-				btnStart.setEnabled(false);
-				btnAdvance.setEnabled(false);
-
-				lblRoundNumber.setText(game.getRoundNumberString());
-
-				runSequence(game.getSpeed());
+				setGameState(lblStatus);
 			}
 		});
 		btnAdvance.setBounds(10, 328, 439, 23);
@@ -372,6 +356,24 @@ public class Interface {
 		});
 		btnSpeed.setBounds(202, 368, 42, 23);
 		panelGame.add(btnSpeed);
+	}
+
+	private void setPlayerAndRoundLabels() {
+		Player playerOfMatch = game.getPlayerOfMatch();
+		lblPlayer.setText(playerOfMatch.getNick());
+		lblStatus.setText("");
+		lblRoundNumber.setText(Integer.toString(playerOfMatch.getPoints() + 1));
+	}
+
+	private void setGameState(JLabel lblStatus) {
+
+		lblStatus.setText("");
+		btnStart.setEnabled(false);
+		btnAdvance.setEnabled(false);
+
+		lblRoundNumber.setText(Integer.toString(game.getPlayerOfMatch().getPoints() + 1));
+
+		runSequence(game.getSpeed());
 	}
 
 	private void buildReportPanel() {
@@ -536,6 +538,7 @@ public class Interface {
 	}
 
 	private int play(String element, JLabel lblStatus) {
+		btnSave.setEnabled(false);
 		int play = game.makePlay(element);
 		lblStatus.setText("");
 		if(play == 1) {
